@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#get current brightness
+BRIGHT="$(cat /sys/class/backlight/amdgpu_bl0/brightness)"
+
+if [[ $1 = "up" ]]; then
+  if [[ $((BRIGHT+$2)) -ge 255 ]]; then
+    echo 255 > /sys/class/backlight/amdgpu_bl0/brightness
+  else
+    echo "$((BRIGHT+$2))" > /sys/class/backlight/amdgpu_bl0/brightness
+  fi
+elif [[ $1 = "down" ]]; then
+  if [[ $((BRIGHT-$2)) -le 0 ]]; then
+   echo 0 > /sys/class/backlight/amdgpu_bl0/brightness
+  else	  
+    echo "$((BRIGHT-$2))" > /sys/class/backlight/amdgpu_bl0/brightness
+  fi
+fi
+
